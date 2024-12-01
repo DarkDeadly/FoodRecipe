@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt")
 const UserModel = require("../../models/userModel")
-
+const AsyncHandler = require("express-async-handler")
+const userModel = require("../../models/userModel")
 
 const RegisterUser =async (req , res) => {
     try {
@@ -54,4 +55,33 @@ const RegisterUser =async (req , res) => {
     }
 }
 
-module.exports = {RegisterUser}
+const LoginProcess = AsyncHandler(async (req , res) => {
+  try {
+    const {email , password} = req.body
+    const user = await userModel.findOne({email})
+    if(!user) {
+        res.status(400).json({
+            message : "Email doesnt exists register please"
+        })
+    }
+    const PasswordMatched = await bcrypt.compare(password , user.password)
+    if (!PasswordMatched) {
+        res.status(400).json({
+            message : "password doesnt match please check again"
+        })
+    }
+    res.status(200).json({
+        id : user._id , 
+        username : user.username ,
+        email : user.email,
+        message : "successfully logged in"
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+
+
+
+module.exports = {RegisterUser , LoginProcess}
