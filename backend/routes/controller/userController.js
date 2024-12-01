@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt")
 const UserModel = require("../../models/userModel")
 const AsyncHandler = require("express-async-handler")
 const userModel = require("../../models/userModel")
-
+const jwt = require('jsonwebtoken')
 const RegisterUser =async (req , res) => {
     try {
         const {username , email , password} = req.body
@@ -43,6 +43,7 @@ const RegisterUser =async (req , res) => {
                         id : UserRegistered._id,
                         email : UserRegistered.email ,
                         username : UserRegistered.username,
+                        token : SignToken(UserRegistered._id),
                         message : 'Registration complete'
                     }
                 )
@@ -80,8 +81,29 @@ const LoginProcess = AsyncHandler(async (req , res) => {
     console.log(error)
   }
 })
+const GetUser = AsyncHandler(async(req , res) => {
+   try {
+    const User = await userModel.findById(req.authuser._id)
+    if (User) {
+        res.status(200).json({
+            username : User.username,
+            email : User.email
+        })
+    }
+    res.status(401).json({
+        message : "not authenticated user"
+    })
+   } catch (error) {
+    console.error(error)
+    res.status(401).json({
+        message : "not authenticated user"
+    })
+   }
+})
+const SignToken = (id) => {
+    return jwt.sign({id} , process.env.JWT_TOKEN , {expiresIn : "30d"})
+}
 
 
 
-
-module.exports = {RegisterUser , LoginProcess}
+module.exports = {RegisterUser , LoginProcess , GetUser}
