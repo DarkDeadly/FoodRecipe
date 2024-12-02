@@ -18,9 +18,10 @@ const UserModels = new mongoose.Schema(
             required : true,
             match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email address']
         },
-        Favourites : [{body : String}]
-
-
+        favourite :[ {
+            type : mongoose.Schema.Types.ObjectId , 
+            ref  : "favourites",
+        }]
     }
 )
 
