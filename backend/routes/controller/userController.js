@@ -83,11 +83,12 @@ const LoginProcess = AsyncHandler(async (req , res) => {
 })
 const GetUser = AsyncHandler(async(req , res) => {
    try {
-    const User = await userModel.findById(req.authuser._id)
+    const User = await userModel.findById(req.authuser._id).populate('favouriteRecipes')
     if (User) {
         res.status(200).json({
             username : User.username,
-            email : User.email
+            email : User.email,
+            favourites : User.favouriteRecipes
         })
     }
     res.status(401).json({

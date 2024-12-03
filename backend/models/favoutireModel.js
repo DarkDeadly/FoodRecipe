@@ -16,6 +16,9 @@ const FavouriteModel = new mongoose.Schema({
     type : String,
     required : true
    },
+   favouriteImage : {
+    type : String
+   }
 })
 
 module.exports = mongoose.model("favourites" , FavouriteModel)
