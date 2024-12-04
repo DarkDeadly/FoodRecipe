@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+@layer components {
+  .FullScreenBg  {
+    background-image: url("./assets/bg.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+  }
+  .Roundedbg {
+    @apply 
+  }
+  .LoginBg {
+    background-image: url("./assets/loginbg.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+  }
+}

@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily : {
+        Diplomzta : ["Diplomata" ]
+      },
       container : {
         center : true ,
         padding : {
