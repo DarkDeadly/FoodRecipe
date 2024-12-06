@@ -26,7 +26,7 @@ const RegisterUser =async (req , res) => {
         } 
         if (!emailRegex.test(email)) {
             res.status(400).json({
-                message : "wrong email format"
+                message : "Please enter a valid email address"
             })
         } 
         if (passRegex.test(password) && emailRegex.test(email) ) {
