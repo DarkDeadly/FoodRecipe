@@ -2,7 +2,10 @@ import React from 'react'
 import './login.css'
 import Inputs from '../components/Inputs'
 import Buttons from '../components/Button'
+import {useNavigate } from 'react-router-dom'
+
 const Login = () => {
+    const navigate = useNavigate()
     return (
         <div>
             <div className="FullScreenBg h-screen w-full ">
@@ -17,6 +20,8 @@ const Login = () => {
                                 <Inputs/>
                                 <Inputs textType='password' placeText='please enter your password'/>
                                 <Buttons/>
+                                <p className='text-lg text-white'>you don't have an account ? what you waiting for <span className='underline text-violet-500 cursor-pointer' onClick={() => navigate("/Register")}>Register</span> </p>
+
                             </form>
                             </div>
                             </div>
