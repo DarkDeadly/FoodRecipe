@@ -4,16 +4,11 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server : {
-    '/users': { 
-      target: 'http://localhost:3000', 
-      changeOrigin: true, 
-      rewrite: (path) => path.replace(/^\/users/, '/users'), 
-    }, 
-      '/favourite': { 
-        target: 'http://localhost:3000', 
-        changeOrigin: true, 
-        rewrite: (path) => path.replace(/^\/favourite/, '/favourite'), 
-      },
+   server :  {
+    port : 5173,
+    proxy : {
+    "/users/register" : "http://localhost:5000/",
+    "/users/login" : "http://localhost:5000/"
+    }
   }
 })

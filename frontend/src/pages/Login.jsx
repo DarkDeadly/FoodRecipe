@@ -3,10 +3,46 @@ import './login.css'
 import Inputs from '../components/Inputs'
 import Buttons from '../components/Button'
 import {useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import * as yup from 'yup'
 
+import {useFormik} from "formik"
 const Login = () => {
     const navigate = useNavigate()
-    
+
+    const formik = useFormik(
+        {
+            initialValues : {
+                email : "",
+                password : ""
+            },
+            onSubmit : async(values , { setSubmitting, setErrors }) => {
+                try {
+                    const response = await axios.post("/users/login" , {
+                        email : values.email,
+                        password : values.password
+                    },
+                    {
+                        headers : {Authorization : `Bearer ${localStorage.getItem("token")}`}
+                    }
+                )
+                if (response) {
+                    console.log(response.data)
+                    formik.resetForm()
+
+                }
+                } catch (error) {
+                    setSubmitting(false);
+                if (error.response && error.response.data && error.response.data.message) {
+                    setErrors({ server: error.response.data.message });
+                }else {
+                    console.error('An error occurred:', error);
+                }
+                }
+            
+            }
+        }
+    )
     return (
         <div>
             <div className="FullScreenBg h-screen w-full ">
@@ -17,10 +53,22 @@ const Login = () => {
                             <div className='formLogin w-full h-full flex flex-col justify-center items-center'>
                             <p className='text-4xl pb-5  bg-gradient-to-r from-red-500 to-orange-500  bg-clip-text text-transparent text-center'>Welcome to Food Recipes</p>
                             <div className='w-[80%]'>
-                            <form action="">
-                                <Inputs/>
-                                <Inputs textType='password' placeText='please enter your password'/>
-                                <Buttons/>
+                            <form onSubmit={formik.handleSubmit}>
+                                <Inputs
+                                handleonchange={formik.handleChange}
+                                inputValue={formik.values.email}
+                                inputName='email'
+                                />
+                                <Inputs 
+                                textType='password' 
+                                placeText='please enter your password'
+                                inputName='password'
+                                handleonchange={formik.handleChange}
+                                inputValue={formik.values.password}
+                                />
+                                <Buttons handleclick={formik.handleSubmit}/>
+                                {formik.errors.server && <div className="text-red-500 alert font-bold"></div>}
+
                                 <p className='text-lg text-white'>you don't have an account ? what you waiting for <span className='underline text-violet-500 cursor-pointer' onClick={() => navigate("/Register")}>Register</span> </p>
 
                             </form>

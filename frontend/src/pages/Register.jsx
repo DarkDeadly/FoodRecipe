@@ -23,8 +23,36 @@ const Register = () => {
             confirmPassword : ""
         },
         validationSchema : formValidation,
-        onSubmit :(values) => {
-            console.log(values)
+        onSubmit :async(values , { setSubmitting, setErrors }) => {
+            const {username , email , password }  = values
+            try {
+                const response = await axios.post("/users/register" , {
+                    username : username ,
+                    password : password,
+                    email : email ,
+                }, { headers: { 'Content-Type': 'application/json' }}
+            
+            )
+                if (response.data) {
+                    console.log(response.data.token)
+                    navigate("/")
+                    values = {
+                        username : "",
+                        email : "" , 
+                        password :"",
+                        confirmPassword : ""
+                    }
+                    localStorage.setItem("token" , response.data.token)
+                }
+              formik.resetForm()
+            } catch (error) {
+                setSubmitting(false);
+                if (error.response && error.response.data && error.response.data.message) {
+                    setErrors({ server: error.response.data.message });
+                }else {
+                    console.error('An error occurred:', error);
+                }
+            }
             
         }
 
@@ -48,12 +76,12 @@ const Register = () => {
                         handleonchange={formik.handleChange}
                         inputValue={formik.values.username}
                         />
-                        {formik.errors && <div className="text-red-500">{formik.errors.username}</div>}
+                        {formik.errors && <div className="text-red-500 font-bold">{formik.errors.username}</div>}
                         <Inputs
                         handleonchange={formik.handleChange}
                         inputValue={formik.values.email}
                         />
-                        {formik.errors && <div className="text-red-500">{formik.errors.email}</div>}
+                        {formik.errors && <div className="text-red-500 font-bold">{formik.errors.email}</div>}
                         <Inputs 
                         textType='password' 
                         placeText='please enter your password'
@@ -61,7 +89,7 @@ const Register = () => {
                         handleonchange={formik.handleChange}
                         inputValue={formik.values.password}
                         />
-                        {formik.errors && <div className="text-red-500">{formik.errors.password}</div>}
+                        {formik.errors && <div className="text-red-500 font-bold">{formik.errors.password}</div>}
                          <Inputs 
                         textType='password' 
                         placeText='please confirm your password'
@@ -70,6 +98,7 @@ const Register = () => {
                         inputValue={formik.values.confirmPassword}
                         />
                         {formik.errors && <div className="text-red-500">{formik.errors.confirmPassword}</div>}
+                        {formik.errors.server && <div className="text-red-500 alert font-bold"></div>}
                         <Buttons ButtonText='Sign Up' handleclick={formik.handleSubmit}/>
                         <p className='text-lg text-white'>you have an account ? what you waiting for <span className='underline text-violet-500 cursor-pointer' onClick={() => navigate("/")}>Login</span> </p>
                     </form>
