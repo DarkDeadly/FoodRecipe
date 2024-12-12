@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.62.3",
     "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
     "formik": "^2.4.6",
     "lucide-react": "^0.464.0",
     "react": "^18.3.1",

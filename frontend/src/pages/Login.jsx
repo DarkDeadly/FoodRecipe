@@ -67,7 +67,7 @@ const Login = () => {
                                 inputValue={formik.values.password}
                                 />
                                 <Buttons handleclick={formik.handleSubmit}/>
-                                {formik.errors.server && <div className="text-red-500 alert font-bold"></div>}
+                                                        {formik.errors.server && <div className="text-red-500 alert font-bold"></div>}
 
                                 <p className='text-lg text-white'>you don't have an account ? what you waiting for <span className='underline text-violet-500 cursor-pointer' onClick={() => navigate("/Register")}>Register</span> </p>
 
