@@ -11,8 +11,11 @@
     background-position: center;
     height: 100%;
   }
-  .Roundedbg {
-    @apply 
+  .chefBg {
+    background-image: url("./assets/herobg.jpg"); 
+    background-size: cover;
+    background-position: center;
+    height: 100%;
   }
   .LoginBg {
     background-image: url("./assets/loginbg.jpg");
@@ -20,4 +23,11 @@
     background-position: center;
     height: 100%;
   }
+  .heroBg {
+    background-image: url("./assets/images.jpeg");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+  }
+
 }

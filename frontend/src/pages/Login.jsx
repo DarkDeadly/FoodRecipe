@@ -4,7 +4,6 @@ import Inputs from '../components/Inputs'
 import Buttons from '../components/Button'
 import {useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import * as yup from 'yup'
 
 import {useFormik} from "formik"
 const Login = () => {
